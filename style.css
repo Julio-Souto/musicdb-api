@@ -1,0 +1,16 @@
+#content{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+#content *{
+  margin-top: .5em;
+}
+#album-cover{
+  width: 1rem;
+  align-self: center;
+}
+#artist-form{
+  display: grid;
+  grid-template-columns: 80% 20%;
+}
