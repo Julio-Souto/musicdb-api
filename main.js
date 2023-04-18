@@ -6,11 +6,15 @@ const URI = "https://theaudiodb.com/api/v1/json/2/album.php?m=";
 let id = "2"+randomInt(1,4)+randomInt(1,10)+randomInt(0,10)+randomInt(0,10)+randomInt(0,10)+randomInt(0,10);
 let uri = randomId();
 let content = null;
-let artist = null;
+let artist = "";
 let artistInput = null;
 let form = null;
 let image = null;
 let next = null;
+let guess = null;
+let count = 0;
+let wins = 0;
+let loses = 0;
 
 function randomId(){
   id = "2"+randomInt(1,4)+randomInt(1,10)+randomInt(0,10)+randomInt(0,10)+randomInt(0,10)+randomInt(0,10);
@@ -35,13 +39,46 @@ async function getAlbumAsync() {
     image = document.getElementById("album-cover");
     artistInput = document.getElementById("artist");
     next = document.getElementById("next");
+    guess = document.getElementById("guess");
+    result = document.getElementById("result")
+    console.log(artist)
+    artistInput.placeholder=artist.replace(artist,"_".repeat(artist.length))
     
     form.addEventListener("submit", (e) => {
       e.preventDefault(); 
+      console.log(artist)
+      if(artistInput.value==artist){
+        count = 0;
+        wins++;
+        result.innerHTML = "Wins: "+wins+" - Loses: "+loses;
+        getAlbumAsync();
+      }
+      else{
+        if(count<5){
+          let copy = artistInput.placeholder.split("")
+          for(let i = 0; i <= artist.length; i++){
+            var j = Math.floor(Math.random() * (i + 1));
+            if(copy[j]=="_"){
+              copy[j] = artist[j]
+              count++;
+              break;
+            }
+            else
+              continue
+          }
+          artistInput.placeholder=copy.join("")
+        }
+        else{
+          count = 0;
+          loses++;
+          result.innerHTML = "Wins: "+wins+" - Loses: "+loses;
+          getAlbumAsync();
+        }
+      }
     })
+
     
-    next.addEventListener("click", (e) => {
-      console.log(e)
+    next.addEventListener("click", () => {
       try {
         getAlbumAsync()
       } catch (error) {
@@ -63,7 +100,7 @@ function loadData(data){
     }
     return `<img src="${album}" alt="Album cover" id="album-cover">
     <form action="#" id="artist-form">
-      <input type="text" name="artist" id="artist" value="${artist}">
+      <input type="text" name="artist" id="artist" value="">
       <button id="guess">Guess</button>
     </form>
     <button id="next">Next</button>`;
@@ -80,7 +117,7 @@ function mainApp(){
     throw new Error("error")
   app.innerHTML = `
   ${albumForm}
-  `
+  <p id="result"></p>`
   content = document.querySelector("div#content");
   
   getAlbumAsync();
