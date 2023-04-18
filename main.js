@@ -115,7 +115,7 @@ function loadData(data){
 function mainApp(){
   if(!app)
     throw new Error("error")
-  app.innerHTML = `
+  app.innerHTML = `<h1>Adivina el artista</h1>
   ${albumForm}
   <p id="result"></p>`
   content = document.querySelector("div#content");

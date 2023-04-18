@@ -1,3 +1,7 @@
+h1{
+  text-align: center;
+  text-decoration: underline;
+}
 #content{
   display: flex;
   flex-direction: column;
