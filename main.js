@@ -12,6 +12,7 @@ let form = null;
 let image = null;
 let next = null;
 let guess = null;
+let artistGuess = null;
 let count = 0;
 let wins = 0;
 let loses = 0;
@@ -41,8 +42,10 @@ async function getAlbumAsync() {
     next = document.getElementById("next");
     guess = document.getElementById("guess");
     result = document.getElementById("result")
+    artistGuess = document.getElementById("artist-guess");
     console.log(artist)
     artistInput.placeholder=artist.replace(artist,"_".repeat(artist.length))
+    artistGuess.innerHTML = "Artista: "+artistInput.placeholder +" - "+"Intentos restantes: "+(5-count)
     
     form.addEventListener("submit", (e) => {
       e.preventDefault(); 
@@ -66,7 +69,8 @@ async function getAlbumAsync() {
             else
               continue
           }
-          artistInput.placeholder=copy.join("")
+          artistInput.placeholder = copy.join("")
+          artistGuess.innerHTML = "Artista: "+artistInput.placeholder+" - "+"Intentos restantes: "+(5-count)
         }
         else{
           count = 0;
@@ -99,6 +103,7 @@ function loadData(data){
       return `<p>Album not found</p>`;
     }
     return `<img src="${album}" alt="Album cover" id="album-cover">
+    <p id="artist-guess"></p>
     <form action="#" id="artist-form">
       <input type="text" name="artist" id="artist" value="">
       <button id="guess">Guess</button>
